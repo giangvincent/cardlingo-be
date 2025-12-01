@@ -5,38 +5,39 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DeckResource\Pages;
 use App\Models\Deck;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use BackedEnum;
+use Filament\Schemas\Schema;
+use UnitEnum;
 
 class DeckResource extends Resource
 {
     protected static ?string $model = Deck::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Content';
+    protected static UnitEnum|string|null $navigationGroup = 'Content';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('key')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('difficulty_level')
-                    ->maxLength(50),
-                Forms\Components\Toggle::make('is_premium'),
-                Forms\Components\Toggle::make('is_active')
-                    ->default(true),
-            ]);
+        return $schema->schema([
+            Forms\Components\TextInput::make('key')
+                ->required()
+                ->unique(ignoreRecord: true)
+                ->maxLength(255),
+            Forms\Components\TextInput::make('name')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\Textarea::make('description')
+                ->columnSpanFull(),
+            Forms\Components\TextInput::make('difficulty_level')
+                ->maxLength(50),
+            Forms\Components\Toggle::make('is_premium'),
+            Forms\Components\Toggle::make('is_active')
+                ->default(true),
+        ]);
     }
 
     public static function table(Table $table): Table

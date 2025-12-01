@@ -5,45 +5,46 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
+use BackedEnum;
+use Filament\Schemas\Schema;
+use UnitEnum;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $navigationGroup = 'Players';
+    protected static UnitEnum|string|null $navigationGroup = 'Players';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->unique(ignoreRecord: true),
-                Forms\Components\Select::make('role')
-                    ->options([
-                        'player' => 'Player',
-                        'teacher' => 'Teacher',
-                        'admin' => 'Admin',
-                    ])
-                    ->required(),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->required(fn (string $context) => $context === 'create')
-                    ->label('Password'),
-            ]);
+        return $schema->schema([
+            Forms\Components\TextInput::make('name')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\TextInput::make('email')
+                ->email()
+                ->required()
+                ->unique(ignoreRecord: true),
+            Forms\Components\Select::make('role')
+                ->options([
+                    'player' => 'Player',
+                    'teacher' => 'Teacher',
+                    'admin' => 'Admin',
+                ])
+                ->required(),
+            Forms\Components\TextInput::make('password')
+                ->password()
+                ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
+                ->dehydrated(fn ($state) => filled($state))
+                ->required(fn (string $context) => $context === 'create')
+                ->label('Password'),
+        ]);
     }
 
     public static function table(Table $table): Table

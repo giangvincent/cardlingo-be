@@ -7,14 +7,16 @@ use App\Models\GameSession;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use BackedEnum;
+use UnitEnum;
 
 class GameSessionResource extends Resource
 {
     protected static ?string $model = GameSession::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-presentation-chart-line';
 
-    protected static ?string $navigationGroup = 'Gameplay';
+    protected static UnitEnum|string|null $navigationGroup = 'Gameplay';
 
     public static function table(Table $table): Table
     {

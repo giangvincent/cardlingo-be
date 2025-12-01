@@ -5,53 +5,54 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\MissionResource\Pages;
 use App\Models\Mission;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use BackedEnum;
+use Filament\Schemas\Schema;
+use UnitEnum;
 
 class MissionResource extends Resource
 {
     protected static ?string $model = Mission::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-flag';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-flag';
 
-    protected static ?string $navigationGroup = 'Content';
+    protected static UnitEnum|string|null $navigationGroup = 'Content';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('type')
-                    ->options([
-                        'daily' => 'Daily',
-                        'weekly' => 'Weekly',
-                        'event' => 'Event',
-                    ])
-                    ->required(),
-                Forms\Components\TextInput::make('key')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('reward_xp')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('reward_coins')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\KeyValue::make('conditions')
-                    ->label('Conditions')
-                    ->columnSpanFull(),
-                Forms\Components\DateTimePicker::make('start_date')
-                    ->seconds(false),
-                Forms\Components\DateTimePicker::make('end_date')
-                    ->seconds(false),
-            ]);
+        return $schema->schema([
+            Forms\Components\Select::make('type')
+                ->options([
+                    'daily' => 'Daily',
+                    'weekly' => 'Weekly',
+                    'event' => 'Event',
+                ])
+                ->required(),
+            Forms\Components\TextInput::make('key')
+                ->required()
+                ->unique(ignoreRecord: true)
+                ->maxLength(255),
+            Forms\Components\TextInput::make('name')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\Textarea::make('description')
+                ->columnSpanFull(),
+            Forms\Components\TextInput::make('reward_xp')
+                ->numeric()
+                ->default(0),
+            Forms\Components\TextInput::make('reward_coins')
+                ->numeric()
+                ->default(0),
+            Forms\Components\KeyValue::make('conditions')
+                ->label('Conditions')
+                ->columnSpanFull(),
+            Forms\Components\DateTimePicker::make('start_date')
+                ->seconds(false),
+            Forms\Components\DateTimePicker::make('end_date')
+                ->seconds(false),
+        ]);
     }
 
     public static function table(Table $table): Table

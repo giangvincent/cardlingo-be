@@ -5,60 +5,61 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CardResource\Pages;
 use App\Models\Card;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use BackedEnum;
+use Filament\Schemas\Schema;
+use UnitEnum;
 
 class CardResource extends Resource
 {
     protected static ?string $model = Card::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-rectangle-group';
 
-    protected static ?string $navigationGroup = 'Content';
+    protected static UnitEnum|string|null $navigationGroup = 'Content';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('deck_id')
-                    ->relationship('deck', 'name')
-                    ->required()
-                    ->searchable(),
-                Forms\Components\TextInput::make('code')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('type')
-                    ->options([
-                        'noun' => 'Noun',
-                        'verb' => 'Verb',
-                        'location' => 'Location',
-                        'time' => 'Time',
-                        'adj' => 'Adjective',
-                        'adverb' => 'Adverb',
-                        'prep' => 'Preposition',
-                        'conj' => 'Conjunction',
-                        'extra' => 'Extra',
-                        'wild' => 'Wild',
-                    ])
-                    ->required(),
-                Forms\Components\TextInput::make('text')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('image_path')
-                    ->label('Image path')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('base_points')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\KeyValue::make('grammar_metadata')
-                    ->label('Grammar metadata')
-                    ->reorderable()
-                    ->addButtonLabel('Add entry'),
-                Forms\Components\Toggle::make('is_active')
-                    ->default(true),
-            ]);
+        return $schema->schema([
+            Forms\Components\Select::make('deck_id')
+                ->relationship('deck', 'name')
+                ->required()
+                ->searchable(),
+            Forms\Components\TextInput::make('code')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\Select::make('type')
+                ->options([
+                    'noun' => 'Noun',
+                    'verb' => 'Verb',
+                    'location' => 'Location',
+                    'time' => 'Time',
+                    'adj' => 'Adjective',
+                    'adverb' => 'Adverb',
+                    'prep' => 'Preposition',
+                    'conj' => 'Conjunction',
+                    'extra' => 'Extra',
+                    'wild' => 'Wild',
+                ])
+                ->required(),
+            Forms\Components\TextInput::make('text')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\TextInput::make('image_path')
+                ->label('Image path')
+                ->maxLength(255),
+            Forms\Components\TextInput::make('base_points')
+                ->numeric()
+                ->default(0),
+            Forms\Components\KeyValue::make('grammar_metadata')
+                ->label('Grammar metadata')
+                ->reorderable()
+                ->addButtonLabel('Add entry'),
+            Forms\Components\Toggle::make('is_active')
+                ->default(true),
+        ]);
     }
 
     public static function table(Table $table): Table

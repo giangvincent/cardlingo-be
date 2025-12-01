@@ -5,44 +5,45 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AchievementResource\Pages;
 use App\Models\Achievement;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use BackedEnum;
+use Filament\Schemas\Schema;
+use UnitEnum;
 
 class AchievementResource extends Resource
 {
     protected static ?string $model = Achievement::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-sparkles';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-sparkles';
 
-    protected static ?string $navigationGroup = 'Content';
+    protected static UnitEnum|string|null $navigationGroup = 'Content';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('key')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('reward_xp')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('reward_coins')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\KeyValue::make('conditions')
-                    ->label('Conditions')
-                    ->reorderable()
-                    ->addButtonLabel('Add condition')
-                    ->columnSpanFull(),
-            ]);
+        return $schema->schema([
+            Forms\Components\TextInput::make('key')
+                ->required()
+                ->unique(ignoreRecord: true)
+                ->maxLength(255),
+            Forms\Components\TextInput::make('name')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\Textarea::make('description')
+                ->columnSpanFull(),
+            Forms\Components\TextInput::make('reward_xp')
+                ->numeric()
+                ->default(0),
+            Forms\Components\TextInput::make('reward_coins')
+                ->numeric()
+                ->default(0),
+            Forms\Components\KeyValue::make('conditions')
+                ->label('Conditions')
+                ->reorderable()
+                ->addButtonLabel('Add condition')
+                ->columnSpanFull(),
+        ]);
     }
 
     public static function table(Table $table): Table
