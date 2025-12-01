@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('game_sessions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('deck_id')->nullable()->constrained()->nullOnDelete();
             $table->string('mode', 50)->default('standard');
             $table->string('status', 30)->default('pending');
             $table->unsignedSmallInteger('current_round')->default(1);

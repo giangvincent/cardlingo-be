@@ -3,14 +3,17 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Filament\Panel;
 
 class User extends Authenticatable
+    implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
@@ -55,6 +58,11 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class);
     }
 
+    public function gameSessions(): HasMany
+    {
+        return $this->hasMany(GameSession::class);
+    }
+
     public function achievements(): HasMany
     {
         return $this->hasMany(UserAchievement::class);
@@ -73,5 +81,15 @@ class User extends Authenticatable
     public function xpEvents(): HasMany
     {
         return $this->hasMany(XpEvent::class);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return in_array($this->role, ['admin', 'teacher'], true);
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->profile?->avatar;
     }
 }

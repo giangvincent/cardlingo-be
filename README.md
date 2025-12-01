@@ -14,6 +14,30 @@
 3. Apply migrations and seed demo data: `ddev artisan migrate --seed`.
 4. Open https://mojo-english-be.ddev.site to access the app; default admin seed is `admin@example.com` / `password`.
 
+## API (phase 2 skeleton)
+
+- `GET /api/decks` – list active decks; `GET /api/decks/{deck}/cards` – cards for a deck.
+- `POST /api/game-sessions` – start a session (optional deck_id, mode, max_rounds, settings).
+- `GET /api/game-sessions/{id}` – fetch session with rounds/sentences.
+- `POST /api/game-sessions/{id}/submit-round` – submit cards (+ optional sentenceText, used_original_cards).
+- `POST /api/game-sessions/{id}/finish` – mark a session finished.
+- `GET /api/progression` (auth: Sanctum) – current level/xp, xp_for_next_level, unlocks.
+- `GET /api/achievements` – list definitions.
+- `GET /api/achievements/my` (auth) – your unlocked achievements.
+- `GET /api/missions/daily` and `/api/missions/weekly` (auth) – missions with progress/completion.
+
+## Filament Admin (phase 5)
+
+- Admin panel at `/admin` (web guard); access limited to `admin`/`teacher` roles.
+- Resources: Users, Decks, Cards, Achievements, Missions, Game Sessions (read-only), Rounds (read-only).
+- Use the seeded admin (`admin@example.com` / `password`) to log in and manage content.
+
+## Hardening & performance (phase 6)
+
+- Rate limits: gameplay POST routes use `throttle:gameplay` (60/min per user/IP); deck preload uses `throttle:content-preload` (120/min).
+- Caching: decks and deck cards responses are cached for 5 minutes; caches auto-bust on deck/card save/delete.
+- Queues: default queue remains database; switch to Redis in `.env` for higher throughput if needed.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

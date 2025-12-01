@@ -31,4 +31,17 @@ class Deck extends Model
     {
         return $this->hasMany(Card::class);
     }
+
+    protected static function booted(): void
+    {
+        static::saved(function (Deck $deck) {
+            cache()->forget('decks.active');
+            cache()->forget("deck.{$deck->id}.cards");
+        });
+
+        static::deleted(function (Deck $deck) {
+            cache()->forget('decks.active');
+            cache()->forget("deck.{$deck->id}.cards");
+        });
+    }
 }

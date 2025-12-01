@@ -13,6 +13,7 @@ class GameSession extends Model
 
     protected $fillable = [
         'user_id',
+        'deck_id',
         'mode',
         'status',
         'current_round',
@@ -38,6 +39,11 @@ class GameSession extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function deck(): BelongsTo
+    {
+        return $this->belongsTo(Deck::class);
     }
 
     public function rounds(): HasMany

@@ -34,4 +34,15 @@ class Card extends Model
     {
         return $this->belongsTo(Deck::class);
     }
+
+    protected static function booted(): void
+    {
+        static::saved(function (Card $card) {
+            cache()->forget("deck.{$card->deck_id}.cards");
+        });
+
+        static::deleted(function (Card $card) {
+            cache()->forget("deck.{$card->deck_id}.cards");
+        });
+    }
 }
