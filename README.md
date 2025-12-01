@@ -7,6 +7,13 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Local development (DDEV)
+
+1. Install [DDEV](https://ddev.readthedocs.io/en/stable/) and run `ddev start` in the project root.
+2. Use DDEV's PHP/composer: `ddev composer install`.
+3. Apply migrations and seed demo data: `ddev artisan migrate --seed`.
+4. Open https://mojo-english-be.ddev.site to access the app; default admin seed is `admin@example.com` / `password`.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

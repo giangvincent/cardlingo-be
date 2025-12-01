@@ -1,0 +1,10 @@
+name: mojo-english-be
+type: laravel
+docroot: public
+php_version: "8.4"
+router_http_port: "80"
+router_https_port: "443"
+xdebug_enabled: false
+database:
+  type: mysql
+  version: "8.0"
